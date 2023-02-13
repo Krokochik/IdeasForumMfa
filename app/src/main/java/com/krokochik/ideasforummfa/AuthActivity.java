@@ -54,13 +54,13 @@ public class AuthActivity extends Activity {
 
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
-                boolean isSuccessful = false;
+                boolean isSuccessful = true;
 
                 // Choose a stop animation if your call was succesful or not
                 if (isSuccessful) {
                     transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, () -> {
-                        Intent intent = new Intent(getBaseContext(), Activity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        Intent intent = new Intent(getBaseContext(), AuthActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
                     });
                 } else {
@@ -79,9 +79,12 @@ public class AuthActivity extends Activity {
     protected void onStop() {
         super.onStop();
 
-        if (webSocket != null) {
-            new Thread(() -> webSocket.disconnect()).start();
-            webSocket = null;
-        }
+        new Thread(() -> {
+            if (webSocket != null) {
+                webSocket.disconnect();
+                webSocket = null;
+            }
+        }).start();
+
     }
 }
