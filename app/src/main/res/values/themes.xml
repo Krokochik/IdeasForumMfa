@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.IdeasForumMfaLight" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="android:colorPrimaryDark">@color/light_primaryDark</item>
+        <item name="android:textColorPrimary">@color/light_onPrimary</item>
+        <item name="android:textColor">@color/light_primaryDark</item>
+        <item name="android:colorPrimary">@color/light_primary</item>
+
+        <!-- Secondary brand color. -->
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

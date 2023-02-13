@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1043282760523",
+    "project_id": "ideasforum-7a48b",
+    "storage_bucket": "ideasforum-7a48b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043282760523:android:0a6205a6941beea321cece",
+        "android_client_info": {
+          "package_name": "com.krokochik.ideasforummfa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043282760523-59utevqbf79uovt3k2vq3u9l5ppbgrh0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA72CtJ1bgKPEMROHeZMHNvxSVj0WdRCxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043282760523-59utevqbf79uovt3k2vq3u9l5ppbgrh0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
