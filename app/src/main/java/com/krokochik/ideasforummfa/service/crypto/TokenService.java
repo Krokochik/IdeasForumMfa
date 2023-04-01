@@ -1,4 +1,4 @@
-package com.krokochik.ideasforummfa.service;
+package com.krokochik.ideasforummfa.service.crypto;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -52,8 +52,9 @@ public class TokenService {
     }
 
     public static String getHash(String str, String salt) {
+        str += salt;
         MessageDigest crypt = null;
-        try { crypt = MessageDigest.getInstance("SHA3-512"); } catch (NoSuchAlgorithmException unreachable) {}
+        try { crypt = MessageDigest.getInstance("SHA-512"); } catch (NoSuchAlgorithmException unreachable) {}
         crypt.update(str.getBytes(StandardCharsets.UTF_8));
 
         byte[] bytes = crypt.digest();

@@ -1,4 +1,4 @@
-package com.krokochik.ideasforummfa.net;
+package com.krokochik.ideasforummfa.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -27,6 +27,7 @@ public class NetService {
             while (true) {
                 boolean currentState = hasConnection(ctx);
                 while (hasConnection(ctx) == currentState) {}
+                System.out.println("state changed");
                 runnable.run();
             }
         });

@@ -2,11 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.IdeasForumMfaLight" parent="android:Theme.Material.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="android:colorBackground">@color/light_background</item>
-        <item name="android:colorPrimaryDark">@color/light_primaryDark</item>
-        <item name="android:textColorPrimary">@color/light_onPrimary</item>
-        <item name="android:textColor">@color/light_primaryDark</item>
-        <item name="android:colorPrimary">@color/light_primary</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:colorPrimaryDark">@color/primaryDark</item>
+        <item name="android:textColorPrimary">@color/onPrimary</item>
+        <item name="android:textColor">@color/primaryDark</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:autofilledHighlight">@color/transparent</item>
 
         <!-- Secondary brand color. -->
         <!-- Status bar color. -->

@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -92,8 +93,25 @@ public class TransitionButton extends AppCompatButton {
 
         setBackgroundTintList(ColorStateList.valueOf(defaultColor));
 
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.transition_button_shape_idle);
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.transitionbutton_shape_idle);
         setBackground(background);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled != isEnabled()) {
+            if (!enabled) {
+                getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.primaryGray), PorterDuff.Mode.MULTIPLY);
+                setTextColor(ContextCompat.getColor(getContext(), R.color.onPrimaryGray));
+            }
+            if (enabled) {
+                getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.primaryDark), PorterDuff.Mode.MULTIPLY);
+                setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            }
+        }
+
+        super.setEnabled(enabled);
+
     }
 
     public void startAnimation() {
@@ -114,6 +132,21 @@ public class TransitionButton extends AppCompatButton {
                 isMorphingInProgress = false;
             }
         });
+    }
+
+    public void startShakeAnimation() {
+        setClickable(false);
+        TranslateAnimation shake = new TranslateAnimation(0, 15, 0, 0);
+        shake.setDuration(SHAKE_ANIMATION_DURATION);
+        shake.setInterpolator(new CycleInterpolator(4));
+        shake.setAnimationListener(new AnimationListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                super.onAnimationEnd(animation);
+                setClickable(true);
+            }
+        });
+        startAnimation(shake);
     }
 
     public void setMessageAnimationDuration(int messageAnimationDuration) {
@@ -194,14 +227,11 @@ public class TransitionButton extends AppCompatButton {
 
     private void startWidthAnimation(int from, int to, AnimatorListenerAdapter onAnimationEnd) {
         ValueAnimator widthAnimation = ValueAnimator.ofInt(from, to);
-        widthAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                layoutParams.width = val;
-                setLayoutParams(layoutParams);
-            }
+        widthAnimation.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.width = val;
+            setLayoutParams(layoutParams);
         });
 
         AnimatorSet animatorSet = new AnimatorSet();

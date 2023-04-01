@@ -3,15 +3,37 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/.gradle/caches/transforms-3/8d2d41149b8d5f689a6fb79279952d03/transformed/jetified-transitionbutton-0.2.0/res/drawable/transition_button_shape_idle.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/avd_check_to_close.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/avd_close_to_check.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/circle_shape.xml" value="0.2515625" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/foreground.xml" value="0.21875" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_account.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_baseline_check_circle_outline_24.xml" value="0.2" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_baseline_circle_24.xml" value="0.2" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_check.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_circle.xml" value="0.21875" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_close.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_darker_foreground.xml" value="0.21875" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_edittext_stroke.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_launcher_background.xml" value="0.21510416666666668" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_lock.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_stroke.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_stroke_pressed.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_tick.xml" value="0.2" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_tick_anim.xml" value="0.5" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/ic_wifi_off.xml" value="0.21510416666666668" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/input.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/round.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/drawable/transitionbutton_shape_idle.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/activity_auth.xml" value="0.33" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/activity_get_master_password.xml" value="0.22" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/activity_internet_off.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/activity_network_error.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/activity_set_master_password.xml" value="0.3533083645443196" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/layout/sp_list_item.xml" value="0.2798913043478261" />
         <entry key="..\:/Users/User/AndroidStudioProjects/IdeasForumMfa/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.21510416666666668" />
       </map>
     </option>

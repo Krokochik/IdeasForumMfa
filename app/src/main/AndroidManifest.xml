@@ -13,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IdeasForumMfaLight">
         <activity
-            android:name=".LauncherActivity"
+            android:name=".activities.GetMasterPassword"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SetMasterPassword"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LauncherActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +28,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".InternetOff"
+            android:name=".activities.InternetOff"
             android:exported="false" />
         <activity
-            android:name=".AuthActivity"
-            android:exported="true">
-        </activity>
+            android:name=".activities.AuthActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
