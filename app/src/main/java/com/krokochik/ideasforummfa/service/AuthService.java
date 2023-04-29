@@ -38,23 +38,17 @@ public class AuthService {
 
     public boolean authenticate(String login, String pass) {
         try {
-            Log.d(TAG, "authenticate() called with: login = [" + login + "], pass = [" + pass + "]");
             // step 1
             clientSession.step1(login, pass);
             webSocket.send(new Message("username", login));
-            System.out.println("1 sent");
 
             Message response = webSocket.waitForMessage(
                     msg -> (msg.getContent().containsKey("B") && msg.getContent().containsKey("s")), 5_000L);
             BigInteger B = new BigInteger(response.get("B"));
             BigInteger salt = new BigInteger(response.get("s"));
-            System.out.println("1 rec");
 
-            System.out.println(salt);
-            System.out.println(B);
             // step 2
             SRP6ClientCredentials credentials = clientSession.step2(params, salt, B);
-            System.out.println("step 2 finished");
 
             webSocket.send(new Message(new HashMap<String, String>() {{
                 put("username", login);
@@ -63,26 +57,22 @@ public class AuthService {
             }}));
 
             sessionKey = clientSession.getSessionKey().toString(16);
-            System.out.println("2 sent");
 
-            // final response
+            // successful session key calculation check
             response = webSocket.waitForMessage((msg) -> {
                 return msg.getContent().containsKey("keyId") &&
                         msg.getContent().containsKey("ivId");
             }, 5_000L);
-            System.out.println("2 rec");
 
             response = cipher.decrypt(response,
-                    TokenService.getHash(login + sessionKey, AESKeys.keys[Integer.parseInt(response.get("ivId"))]),
-                    TokenService.getHash(login + sessionKey, AESKeys.keys[Integer.parseInt(response.get("keyId"))]));
+                    TokenService.getHash(AESKeys.keys[Integer.parseInt(response.get("ivId"))], login + sessionKey),
+                    TokenService.getHash(AESKeys.keys[Integer.parseInt(response.get("keyId"))], login + sessionKey));
             System.out.println(response);
 
-            Log.d(TAG, "authenticate() returned: " + response.get("authenticated").equals("true"));
-            return response.get("authenticated").equals("true");
+            return response.get("test").equals("test");
         }
         catch (SRP6Exception | TimeoutException e) {
             e.printStackTrace();
-            Log.d(TAG, "authenticate() returned: " + false);
             return false;
         }
     }

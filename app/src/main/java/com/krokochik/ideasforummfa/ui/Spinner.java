@@ -26,7 +26,7 @@ public class Spinner extends MaterialSpinner {
 
     public void setItemCollection(String... items) {
         for (int i = 0; i < items.length; i++) {
-            items[i] =  StringUtils.repeat(' ', 5) + items[i];
+            items[i] =  StringUtils.repeat(' ', 6) + items[i];
         }
         super.setItems(items);
     }

@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.InternetOff"
+            android:name=".activities.ViewsActivity"
             android:exported="false" />
         <activity
             android:name=".activities.AuthActivity"

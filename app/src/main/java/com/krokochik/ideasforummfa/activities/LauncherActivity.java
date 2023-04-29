@@ -4,10 +4,8 @@ package com.krokochik.ideasforummfa.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.krokochik.ideasforummfa.R;
-import com.krokochik.ideasforummfa.model.Message;
 import com.krokochik.ideasforummfa.network.MessageSender;
 import com.krokochik.ideasforummfa.network.NetService;
 import com.krokochik.ideasforummfa.network.WebSocket;
@@ -24,60 +22,79 @@ import lombok.val;
 
 public class LauncherActivity extends Activity {
 
+    private WebSocket webSocket;
+
+    private void connectToServer(boolean startSavedActivity) {
+        startActivity(new Intent(this, ViewsActivity.class).putExtra("view", "connecting"));
+
+        try {
+            ClientManager clientManager = ClientManager.createClient(new ClientManager());
+
+            int tries = 0;
+            while (true) {
+                try {
+                    clientManager.connectToServer(webSocket = new WebSocket(), new URI("ws://ideas-forum.herokuapp.com/mfa"));
+                    ActivityBroker.setWebSocket(webSocket); // Saving the websocket to other activities
+                    if (startSavedActivity) {
+                        startActivity(new Intent(this, ActivityBroker.getCurrentActivityClass()));
+                        ActivityBroker.getSender().setWebSocket(webSocket);
+                    }
+                    break;
+                } catch (DeploymentException ignored) {
+                    Thread.sleep(1000);
+                    if (++tries == 10)
+                        startActivity(new Intent(this, ViewsActivity.class).putExtra("view", "server"));
+                }
+            }
+        } catch (IOException | URISyntaxException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void connectToServer() {
+        connectToServer(false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityBroker.setCurrentActivityClass(LauncherActivity.class);
+
+        NetService.setOnInternetStateChange((isConnected) -> {
+            if (isConnected) {
+                new Thread(() -> connectToServer(true)).start();
+                startActivity(new Intent(this, ActivityBroker.getCurrentActivityClass()));
+            } else
+                startActivity(new Intent(this, ViewsActivity.class).putExtra("view", "inet"));
+        }, this);
+
+        if (!NetService.isNetworkAvailable(this)) {
+            startActivity(new Intent(this, ViewsActivity.class).putExtra("view", "inet"));
+            return;
+        }
+
+        setContentView(R.layout.activity_launcher);
+
         new Thread(() -> {
-            System.out.println("launcher");
+            val preferences = getSharedPreferences("SecretStorage", MODE_PRIVATE);  // SecretStorage keeps encrypted session key and username
+            Intent intent;
 
-            WebSocket webSocket;
-            ClientManager clientManager = ClientManager.createClient(new ClientManager());
-            try {
-                val preferences = getSharedPreferences("SecretStorage", MODE_PRIVATE);
-                Intent intent;
+            connectToServer();
 
-                if (NetService.hasConnection(this)) {
-                    clientManager.connectToServer(webSocket = new WebSocket(), new URI("ws://ideas-forum.herokuapp.com/mfa"));
-                    ActivityBroker.setWebSocket(webSocket);
-
-                    if (!preferences.contains("sessionKey") || !preferences.contains("username")) {
-                        System.out.println(preferences.getString("sessionKey", "null"));
-                        intent = new Intent(this, AuthActivity.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-                        Log.println(Log.DEBUG, "DBG", "1");
-                    } else {
-                        Log.println(Log.DEBUG, "DBG", "2");
-                        MessageSender sender = new MessageSender(webSocket,
-                                preferences.getString("sessionKey", ""),
-                                preferences.getString("username", ""));
-                        ActivityBroker.setSender(sender);
-
-                        if (sender.isAuthenticated()) {
-                            Log.println(Log.DEBUG, "DBG", "3");
-
-                            System.out.println(preferences.getString("sessionKey", "null"));
-                            intent = new Intent(this, GetMasterPassword.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        } else intent = new Intent(this, AuthActivity.class)
-                                .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-                    }
-                } else intent = new Intent(this, InternetOff.class)
+            if (!preferences.contains("sessionKey") || !preferences.contains("username")) { // if data unsaved: authorize
+                intent = new Intent(this, AuthActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
-                startActivity(intent);
-                val ctx = this;
+            } else {
+                MessageSender sender = new MessageSender(webSocket,
+                        preferences.getString("sessionKey", ""), preferences.getString("username", ""));
+                ActivityBroker.setSender(sender);  // Saving the sender to other activities
 
-                NetService.setOnInternetStateChange(() -> {
-                    if (NetService.hasConnection(this))
-                        startActivity(new Intent(this, ActivityBroker.getCurrentActivityClass()));
-                    else
-                        startActivity(new Intent(this, InternetOff.class));
-                }, this);
-            } catch (DeploymentException | URISyntaxException | IOException ignored) {
-                ignored.printStackTrace();
+                intent = new Intent(this, GetMasterPassword.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             }
+
+            startActivity(intent);
         }).start();
     }
 }

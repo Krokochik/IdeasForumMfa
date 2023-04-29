@@ -32,7 +32,6 @@ public class AuthActivity extends Activity {
     private EditText passwordEdit;
 
     private WebSocket webSocket;
-    private ClientManager clientManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +46,9 @@ public class AuthActivity extends Activity {
         usernameEdit.setText(savedInstanceState == null ? "" : savedInstanceState.getString("username"));
 
         System.out.println("auth");
+
         // net
-        connect();
+        webSocket = ActivityBroker.getWebSocket();
 
         //ui
         tuneTransitionButton();
@@ -59,32 +59,6 @@ public class AuthActivity extends Activity {
         super.onSaveInstanceState(outState);
 
         outState.putString("username", usernameEdit.getText().toString());
-    }
-
-    private void disconnect() {
-        new Thread(() -> {
-            if (webSocket != null) {
-                webSocket.disconnect();
-                webSocket = null;
-            }
-            if (clientManager != null) {
-                clientManager.shutdown();
-                clientManager = null;
-            }
-            System.gc();
-        }).start();
-    }
-
-    private void connect() {
-        System.out.println("connect");
-        new Thread(() -> {
-            clientManager = ClientManager.createClient(new ClientManager());
-            try {
-                clientManager.connectToServer(webSocket = new WebSocket(), new URI("ws://ideas-forum.herokuapp.com/mfa"));
-            } catch (DeploymentException | URISyntaxException | IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
     }
 
     private void tuneTransitionButton() {
@@ -109,7 +83,6 @@ public class AuthActivity extends Activity {
                 boolean isSuccessful = auth
                         .authenticate(usernameEdit.getText().toString(), passwordEdit.getText().toString());
                 System.out.println(isSuccessful);
-                // Choose a stop animation if your call was successful or not
 
                 if (isSuccessful) {
                     this.runOnUiThread(() -> {
@@ -137,27 +110,5 @@ public class AuthActivity extends Activity {
                 }
             }).start();
         });
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        System.out.println("res");
-        connect();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        disconnect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        disconnect();
     }
 }

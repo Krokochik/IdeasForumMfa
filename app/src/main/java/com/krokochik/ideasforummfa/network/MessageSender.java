@@ -1,6 +1,7 @@
 package com.krokochik.ideasforummfa.network;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -29,14 +31,16 @@ import lombok.val;
 import lombok.var;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class MessageSender {
-    private final MessageCipher cipher = new MessageCipher("username", "keyId", "ivId");
+
+    private final MessageCipher cipher = new MessageCipher("username", "keyId", "ivId", "content");
+
+    @Setter
     @NonNull
-    private final WebSocket webSocket;
-    @NonNull
-    private final String sessionKey;
-    @NonNull
-    private final String username;
+    private WebSocket webSocket;
+    private String sessionKey;
+    private String username;
 
     public void sendMessage(@NonNull Message message, boolean encrypt) {
         if (encrypt) {
@@ -49,7 +53,6 @@ public class MessageSender {
 
     public Bitmap enquireAvatar(@NonNull Context ctx) {
         var request = new Message("get", "avatar");
-        request.put("username", username);
         sendMessage(request, false);
 
         String encodedAvatar;
@@ -57,10 +60,12 @@ public class MessageSender {
         try {
             val response = webSocket.waitForMessage(
                     msg -> msg.getContent().containsKey("avatar"),
-                    5_000L);
+                    -1L);
             encodedAvatar = response.get("avatar");
+            System.out.println(encodedAvatar);
             assert (encodedAvatar != null);
         } catch (Exception e) {
+            e.printStackTrace();
             encodedAvatar = ctx.getResources().getString(R.string.guest_avatar);
         }
 
@@ -70,19 +75,28 @@ public class MessageSender {
 
     public Boolean isAuthenticated() {
         Message request = new Message(new HashMap<String, String>() {{
-            put("get", "auth");
+            put("get", "authCheckingMessage");
         }});
         sendMessage(request, false);
 
         Message response;
 
         try {
-            response = webSocket.waitForMessage(msg -> msg.getContent().containsKey("auth"), 5_000L);
+            response = webSocket.waitForMessage(msg -> {
+                return msg.getContent().containsKey("content") && msg.get("content").equals("authCheckingMessage");
+            }, 5_000L);
         } catch (TimeoutException e) {
-            response = new Message("auth", "false");
+            System.out.println("timeout");
+            return false;
         }
 
-        return response.get("auth").equals("true");
+        val decryptedResponse = decrypt(response);
+        if (decryptedResponse.isPresent())
+            response = decryptedResponse.get();
+        else return false;
+
+        System.out.println("last return");
+        return response.getContent().containsKey("test") && response.get("test").equals("test");
     }
 
     private Message encrypt(@NonNull Message message) {
@@ -92,8 +106,8 @@ public class MessageSender {
         message.put("keyId", keyId);
         message.put("ivId", keyId);
         return cipher.encrypt(message,
-                TokenService.getHash(username + sessionKey, AESKeys.keys[ivId]),
-                TokenService.getHash(username + sessionKey, AESKeys.keys[keyId]));
+                TokenService.getHash(AESKeys.keys[ivId], username + sessionKey),
+                TokenService.getHash(AESKeys.keys[keyId], username + sessionKey));
     }
 
     private Optional<Message> decrypt(@NonNull Message message) {
@@ -101,8 +115,8 @@ public class MessageSender {
             return Optional.empty();
 
         return Optional.of(cipher.decrypt(message,
-                TokenService.getHash(username + sessionKey, AESKeys.keys[Integer.parseInt(message.get("ivId"))]),
-                TokenService.getHash(username + sessionKey, AESKeys.keys[Integer.parseInt(message.get("keyId"))])));
+                TokenService.getHash(AESKeys.keys[Integer.parseInt(message.get("ivId"))], username + sessionKey),
+                TokenService.getHash(AESKeys.keys[Integer.parseInt(message.get("keyId"))], username + sessionKey)));
     }
 
 }

@@ -3,32 +3,26 @@ package com.krokochik.ideasforummfa.network;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telecom.Call;
+
+import com.krokochik.ideasforummfa.model.CallbackTask;
+import com.krokochik.ideasforummfa.model.Condition;
 
 public class NetService {
-    public static boolean hasConnection(final Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        return false;
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static void setOnInternetStateChange(Runnable runnable, Context ctx) {
+
+    public static void setOnInternetStateChange(CallbackTask<Boolean> task, Context ctx) {
         Thread thread = new Thread(() -> {
             while (true) {
-                boolean currentState = hasConnection(ctx);
-                while (hasConnection(ctx) == currentState) {}
-                System.out.println("state changed");
-                runnable.run();
+                boolean currentState = isNetworkAvailable(ctx);
+                while (isNetworkAvailable(ctx) == currentState) {}
+                task.run(!currentState);
             }
         });
         thread.start();

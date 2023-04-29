@@ -34,6 +34,10 @@ public class WebSocket {
     private Session session;
     final ArrayList<CallbackTask<Message>> onMessage = new ArrayList<>();
 
+    public boolean isOpened() {
+        return session.isOpen();
+    }
+
     @OnOpen
     public void onOpen(Session session) {
         this.session = session;
@@ -73,10 +77,10 @@ public class WebSocket {
     }
 
     public void disconnect() {
-        try {
-            session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal closure"));
-        } catch (IOException ignored) {
-        }
+        if (session.isOpen())
+            try {
+                session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "normal closure"));
+            } catch (IOException ignored) { }
     }
 
     private void setOnMessage(CallbackTask<Message> task) {
@@ -88,6 +92,8 @@ public class WebSocket {
     }
 
     public Message waitForMessage(final Condition<Message> test, final Long timeout) throws TimeoutException {
+        while (!session.isOpen()) {
+        }
         AtomicReference<Message> msg = new AtomicReference<>();
         AtomicBoolean wait = new AtomicBoolean(true);
 
@@ -145,6 +151,9 @@ public class WebSocket {
     }
 
     public void asyncSend(Message msg) {
+        while (!session.isOpen()) {
+        }
+
         new Thread(() -> {
             if (session.isOpen())
                 session.getAsyncRemote().sendObject(msg);

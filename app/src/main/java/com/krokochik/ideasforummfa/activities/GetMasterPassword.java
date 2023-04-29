@@ -12,6 +12,7 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.jaredrummler.materialspinner.MaterialSpinnerAdapter;
 import com.jaredrummler.materialspinner.MaterialSpinnerBaseAdapter;
 import com.krokochik.ideasforummfa.R;
+import com.krokochik.ideasforummfa.network.MessageSender;
 import com.krokochik.ideasforummfa.service.ActivityBroker;
 import com.krokochik.ideasforummfa.ui.Spinner;
 import com.krokochik.ideasforummfa.ui.TransitionButton;
@@ -31,13 +32,16 @@ public class GetMasterPassword extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityBroker.setCurrentActivityClass(this.getClass());
+        ActivityBroker.setCurrentActivityClass(getClass());
         setContentView(R.layout.activity_get_master_password);
 
         val ctx = this;
         new Thread(() -> {
+            while (!ActivityBroker.getWebSocket().isOpened()) {}
+            System.out.println("avatar enquired");
+            val avatar = ActivityBroker.getSender().enquireAvatar(ctx);
             ctx.runOnUiThread(() -> {
-                ((ImageView) findViewById(R.id.imageView4)).setImageBitmap(ActivityBroker.getSender().enquireAvatar(this));
+                ((ImageView) findViewById(R.id.imageView4)).setImageBitmap(avatar);
             });
         }).start();
 
@@ -54,6 +58,5 @@ public class GetMasterPassword extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 }
