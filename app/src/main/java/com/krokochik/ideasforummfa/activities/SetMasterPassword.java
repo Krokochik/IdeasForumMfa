@@ -2,6 +2,7 @@ package com.krokochik.ideasforummfa.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,13 +14,13 @@ import androidx.core.content.ContextCompat;
 
 import com.krokochik.ideasforummfa.R;
 import com.krokochik.ideasforummfa.model.Condition;
-import com.krokochik.ideasforummfa.network.MessageSender;
+import com.krokochik.ideasforummfa.resources.GS;
 import com.krokochik.ideasforummfa.service.ActivityBroker;
-import com.krokochik.ideasforummfa.service.AuthService;
 import com.krokochik.ideasforummfa.service.crypto.MessageCipher;
 import com.krokochik.ideasforummfa.ui.TransitionButton;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import lombok.Getter;
@@ -63,8 +64,8 @@ public class SetMasterPassword extends Activity {
                 }
                 return false;
             }));
-            add(new State(ctx, findViewById(R.id.stateThree), txt -> txt.matches("((.+)?\\d+(.+)?)+")));
-            add(new State(ctx, findViewById(R.id.stateFour), txt -> txt.matches("((.+)?[_\\W](.+)?)+")));
+            add(new State(ctx, findViewById(R.id.stateThree), txt -> txt.matches(GS.REG_AT_LEAST_ONE_NUMBER)));
+            add(new State(ctx, findViewById(R.id.stateFour), txt -> txt.matches(GS.REG_AT_LEAST_ONE_SYMBOL)));
         }};
 
         button.setEnabled(false);
@@ -96,14 +97,23 @@ public class SetMasterPassword extends Activity {
             button.startAnimation();
 
             new Thread(() -> {
-                val preferences = getSharedPreferences("SecretStorage", MODE_PRIVATE);
-                val encryptedKey = MessageCipher.encrypt(getIntent().getExtras().get("sk").toString(), "", passwordInput.getText().toString());
-                System.out.println("encryptedKey = " + encryptedKey);
+                // saving username & session key to preferences
+                SharedPreferences preferences = getSharedPreferences(GS.ST_AUTH_DATA_NAME, MODE_PRIVATE);
+                String encryptedKey = MessageCipher.encrypt(
+                        getIntent().getExtras().get(GS.EXTRA_SESSION_KEY).toString(),
+                        "", passwordInput.getText().toString());
 
-                if (preferences.edit().putString("sessionKey", encryptedKey).commit() &&
-                        preferences.edit().putString("username", getIntent().getExtras().get("username").toString()).commit()) {
+                val usernameSet = new HashSet<String>(preferences.getStringSet(GS.ST_USERNAME_SET, new HashSet<>())) {{
+                    add(getIntent().getExtras().getString("username"));
+                }};
+                val sessionKeySet = new HashSet<String>(preferences.getStringSet(GS.ST_SESSION_KEY_SET, new HashSet<>())) {{
+                    add(encryptedKey);
+                }};
 
-                    try { Thread.sleep(250); } catch (InterruptedException unreachable) {}
+                if (preferences.edit().putStringSet(GS.ST_SESSION_KEY_SET, sessionKeySet).commit() &&
+                        preferences.edit().putStringSet(GS.ST_USERNAME_SET, usernameSet).commit()) {
+
+                    try { Thread.sleep(250); } catch (InterruptedException unreachable) {} // significant addition. DO NOT REMOVE!!!
 
                     ctx.runOnUiThread(() ->
                             button.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, () -> {

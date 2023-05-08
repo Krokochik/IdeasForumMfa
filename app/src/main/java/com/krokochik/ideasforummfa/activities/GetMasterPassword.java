@@ -13,6 +13,7 @@ import com.jaredrummler.materialspinner.MaterialSpinnerAdapter;
 import com.jaredrummler.materialspinner.MaterialSpinnerBaseAdapter;
 import com.krokochik.ideasforummfa.R;
 import com.krokochik.ideasforummfa.network.MessageSender;
+import com.krokochik.ideasforummfa.resources.GS;
 import com.krokochik.ideasforummfa.service.ActivityBroker;
 import com.krokochik.ideasforummfa.ui.Spinner;
 import com.krokochik.ideasforummfa.ui.TransitionButton;
@@ -48,7 +49,7 @@ public class GetMasterPassword extends Activity {
         accountSpinner = findViewById(R.id.spinner);
         button = findViewById(R.id.button);
 
-        accountSpinner.setItemCollection("User", "ogijdfgxpio");
+        accountSpinner.setItemCollection(getIntent().getExtras().getString(GS.EXTRA_USERNAME));
         accountSpinner.getTextSize();
         accountSpinner.getItems();
 

@@ -11,21 +11,13 @@ import androidx.core.content.ContextCompat;
 import com.krokochik.ideasforummfa.R;
 import com.krokochik.ideasforummfa.network.MessageSender;
 import com.krokochik.ideasforummfa.network.WebSocket;
+import com.krokochik.ideasforummfa.resources.GS;
 import com.krokochik.ideasforummfa.service.ActivityBroker;
 import com.krokochik.ideasforummfa.service.AuthService;
 import com.krokochik.ideasforummfa.ui.TransitionButton;
 
-import org.glassfish.tyrus.client.ClientManager;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import jakarta.websocket.DeploymentException;
-
 
 public class AuthActivity extends Activity {
-
     // ui
     private TransitionButton transitionButton;
     private EditText usernameEdit;
@@ -43,9 +35,8 @@ public class AuthActivity extends Activity {
         passwordEdit = findViewById(R.id.password_input);
         transitionButton = findViewById(R.id.login_button);
 
-        usernameEdit.setText(savedInstanceState == null ? "" : savedInstanceState.getString("username"));
+        usernameEdit.setText(savedInstanceState == null ? "" : savedInstanceState.getString(GS.EXTRA_SAVED_USERNAME));
 
-        System.out.println("auth");
 
         // net
         webSocket = ActivityBroker.getWebSocket();
@@ -58,7 +49,7 @@ public class AuthActivity extends Activity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString("username", usernameEdit.getText().toString());
+        outState.putString(GS.EXTRA_SAVED_USERNAME, usernameEdit.getText().toString());
     }
 
     private void tuneTransitionButton() {
@@ -89,8 +80,8 @@ public class AuthActivity extends Activity {
                         transitionButton.stopAnimation(TransitionButton.StopAnimationStyle.EXPAND, () -> {
                             Intent intent = new Intent(getBaseContext(), SetMasterPassword.class)
                                     .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                    .putExtra("sk", auth.getSessionKey())
-                                    .putExtra("username", usernameEdit.getText().toString());
+                                    .putExtra(GS.EXTRA_SESSION_KEY, auth.getSessionKey())
+                                    .putExtra(GS.EXTRA_USERNAME, usernameEdit.getText().toString());
                             MessageSender sender = new MessageSender(webSocket,
                                     auth.getSessionKey(),
                                     usernameEdit.getText().toString());

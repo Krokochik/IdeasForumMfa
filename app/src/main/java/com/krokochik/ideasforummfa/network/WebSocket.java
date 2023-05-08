@@ -23,6 +23,7 @@ import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 
 @ClientEndpoint(
@@ -33,6 +34,7 @@ public class WebSocket {
 
     private Session session;
     final ArrayList<CallbackTask<Message>> onMessage = new ArrayList<>();
+    CallbackTask<CloseReason> onCloseTask;
 
     public boolean isOpened() {
         return session.isOpen();
@@ -67,7 +69,12 @@ public class WebSocket {
 
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
-        System.out.println("closed");
+        if (onCloseTask != null)
+            onCloseTask.run(closeReason);
+    }
+
+    public void setOnCloseEvent(@NonNull CallbackTask<CloseReason> task) {
+        onCloseTask = task;
     }
 
     @OnError
