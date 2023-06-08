@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="326dp"
+        android:layout_height="255dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_qr_code"
+        app:layout_constraintBottom_toTopOf="@+id/scan_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/scan_button"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_margin="32dp"
+        android:enabled="true"
+        android:gravity="center"
+        app:fb_backgroundColor="@color/primaryDark"
+        app:fb_cornerRadius="20dp"
+        app:fb_shape="rectangle"
+        app:fb_text="Сканировать QR-код"
+        app:fb_textColor="@color/background"
+        app:fb_textSize="19sp"
+        app:fb_textStyle="bold"
+        app:flow_horizontalAlign="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.589" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/input_button"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_margin="32dp"
+        android:enabled="true"
+        android:gravity="center"
+        app:fb_backgroundColor="@color/primaryGray"
+        app:fb_cornerRadius="20dp"
+        app:fb_shape="rectangle"
+        app:fb_text="Ввести вручную"
+        app:fb_textColor="@color/background"
+        app:fb_textSize="19sp"
+        app:fb_textStyle="bold"
+        app:flow_horizontalAlign="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.755" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="31dp"
+        android:layout_height="20dp"
+        android:fontFamily="@font/atma_medium"
+        android:text="или"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/input_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scan_button"
+        app:layout_constraintVertical_bias="0.35" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

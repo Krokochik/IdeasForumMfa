@@ -8,10 +8,21 @@
     <color name="onBackground">#0D656462</color>
     <color name="green">#319E2C</color>
     <color name="red">#9E2C2C</color>
-    <color name="primaryGray">#CBC6C4BE</color>
+    <color name="primaryGray">#96877D</color>
+    <color name="lightGray">#CBC6C4BE</color>
     <color name="onPrimaryGray">#FFF7F0</color>
     <color name="transparent">#00000000</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="qr_code_white">#FFFFFFFF</color>
+    <color name="qr_code_flashlight_bg">#66000000</color>
+    <color name="qr_code_finder_mask">#80000000</color>
+    <color name="qr_code_flash_light_text_color">#66FFFFFF</color>
+    <color name="qr_code_finder_frame">#FFFFFFFF</color>
+    <color name="qr_code_finder_laser">#25f705</color>
 </resources>

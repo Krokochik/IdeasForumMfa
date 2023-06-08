@@ -12,8 +12,8 @@ public class GS {
     public static final String EXTRA_USERNAME = "username";
     public static final String EXTRA_SAVED_USERNAME = "savedUsername";
 
-    // URLs
-    public static final String L_SERVER_WEBSOCKET_ENDPOINT = "ws://ideas-forum.herokuapp.com/mfa";
+    // Links
+    public static final String L_SERVER_ENDPOINT = "https://ideas-forum.herokuapp.com/mfa";
 
     // Regulars
     public static final String REG_AT_LEAST_ONE_NUMBER = "((.+)?\\d+(.+)?)+";

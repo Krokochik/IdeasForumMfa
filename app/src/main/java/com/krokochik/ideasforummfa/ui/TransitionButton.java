@@ -101,7 +101,7 @@ public class TransitionButton extends AppCompatButton {
     public void setEnabled(boolean enabled) {
         if (enabled != isEnabled()) {
             if (!enabled) {
-                getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.primaryGray), PorterDuff.Mode.MULTIPLY);
+                getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.lightGray), PorterDuff.Mode.MULTIPLY);
                 setTextColor(ContextCompat.getColor(getContext(), R.color.onPrimaryGray));
             }
             if (enabled) {

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="313dp"
+        android:layout_height="49dp"
+        android:text="Введите код"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/code_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.89" />
+
+    <EditText
+        android:id="@+id/code_input"
+        android:layout_width="305dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="324dp"
+        android:background="@drawable/ic_stroke"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:fontFamily="sans-serif-medium"
+        android:hint="XXXXXXXXXXXXXXXX"
+        android:maxLength="18"
+        android:inputType="text"
+        android:letterSpacing="0.15"
+        android:padding="6dp"
+        android:textAlignment="center"
+        android:textColor="@color/onPrimary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.krokochik.ideasforummfa.ui.TransitionButton
+        android:id="@+id/submit_button"
+        android:layout_width="305dp"
+        android:layout_height="49dp"
+        android:gravity="center"
+        android:text="Подтвердить"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:enabled="false"
+        android:background="@color/primaryDark"
+        app:defaultColor="@color/lightGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/code_input"
+        app:layout_constraintVertical_bias="0.053"
+        app:loaderColor="@android:color/white" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

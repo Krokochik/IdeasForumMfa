@@ -27,12 +27,12 @@
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/reconnect_button"
+        app:layout_constraintBottom_toTopOf="@+id/input_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.github.nikartm.button.FitButton
-        android:id="@+id/reconnect_button"
+        android:id="@+id/input_button"
         android:layout_width="280dp"
         android:layout_height="50dp"
         android:layout_margin="32dp"
