@@ -3,9 +3,11 @@
     <color name="background">#FFFBE9</color>
     <color name="primary">#CEAB93</color>
     <color name="primaryDark">#AD8B73</color>
+    <color name="onPrimaryLight">#CFAF98</color>
     <color name="onPrimary">#5E4C40</color>
+    <color name="blue">#2962FF</color>
     <color name="foregroundDarker">#4DAD8B73</color>
-    <color name="onBackground">#0D656462</color>
+    <color name="onBackground">#33959493</color>
     <color name="green">#319E2C</color>
     <color name="red">#9E2C2C</color>
     <color name="primaryGray">#96877D</color>

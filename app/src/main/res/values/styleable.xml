@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HorizontalTimer">
+        <attr name="color" format="color" />
+        <attr name="flashColor" format="color" />
+        <attr name="borderRadius" format="integer" />
+    </declare-styleable>
+</resources>

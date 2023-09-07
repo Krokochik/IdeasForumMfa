@@ -20,6 +20,7 @@ import com.krokochik.ideasforummfa.network.NetService;
 import com.krokochik.ideasforummfa.resources.GS;
 import com.krokochik.ideasforummfa.service.ActivityBroker;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LauncherActivity extends Activity {
@@ -28,9 +29,13 @@ public class LauncherActivity extends Activity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
 
     private boolean isServerAvailable() {
-        Response response = addresser.sendRequest(
-                new Request(Request.Method.GET, "/ping"));
-        return response.getCode() == 200;
+        try {
+            Response response = addresser.sendRequest(
+                    new Request(Request.Method.GET, "/ping"));
+            return response.getCode() == 200;
+        } catch (Exception e) { // if server is absolutely off HttpRequestsAddresser may produce FileNotFoundException
+            return false;
+        }
     }
 
     @Override
@@ -40,7 +45,9 @@ public class LauncherActivity extends Activity {
         setContentView(R.layout.activity_launcher);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.CAMERA
+            }, CAMERA_PERMISSION_REQUEST_CODE);
         } else {
             launch();
         }
@@ -62,33 +69,29 @@ public class LauncherActivity extends Activity {
                 if (isServerAvailable())
                     startActivity(new Intent(this, ActivityBroker.getCurrentActivityClass()));
                 else
-                    startActivity(new Intent(this, ViewsActivity.class).putExtra("view", GS.VIEW_CONNECTING_TO_SERVER_FAILURE));
+                    startActivity(new Intent(this, ViewsActivity.class)
+                            .putExtra("view", GS.VIEW_CONNECTING_TO_SERVER_FAILURE));
             } else
-                startActivity(new Intent(this, ViewsActivity.class).putExtra("view", GS.VIEW_INTERNET_IS_UNAVAILABLE));
+                startActivity(new Intent(this, ViewsActivity.class)
+                        .putExtra("view", GS.VIEW_INTERNET_IS_UNAVAILABLE));
         }, this);
 
         if (!NetService.isNetworkAvailable(this)) {
-            startActivity(new Intent(this, ViewsActivity.class).putExtra("view", GS.VIEW_INTERNET_IS_UNAVAILABLE));
+            startActivity(new Intent(this, ViewsActivity.class)
+                    .putExtra("view", GS.VIEW_INTERNET_IS_UNAVAILABLE));
             return;
         }
 
-        // checking availability of server
-        AtomicBoolean isServerAvailable = new AtomicBoolean();
-        Thread checkingServerAvailability = new Thread(() -> {
-            isServerAvailable.set(isServerAvailable());
-        });
-        checkingServerAvailability.start();
-        try {
-            checkingServerAvailability.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (!isServerAvailable.get()) {
-            startActivity(new Intent(this, ViewsActivity.class).putExtra("view", GS.VIEW_CONNECTING_TO_SERVER_FAILURE));
-            return;
-        }
+        new Thread(() -> {
+            // checking availability of server
+            boolean isServerAvailable = isServerAvailable();
+            if (!isServerAvailable) {
+                startActivity(new Intent(this, ViewsActivity.class)
+                        .putExtra("view", GS.VIEW_CONNECTING_TO_SERVER_FAILURE));
+                return;
+            }
 
-        startActivity(new Intent(this, AuthorizationActivity.class));
-
+            startActivity(new Intent(this, AuthorizationActivity.class));
+        }).start();
     }
 }

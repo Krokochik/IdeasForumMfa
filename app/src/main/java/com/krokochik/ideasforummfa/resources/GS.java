@@ -13,7 +13,7 @@ public class GS {
     public static final String EXTRA_SAVED_USERNAME = "savedUsername";
 
     // Links
-    public static final String L_SERVER_ENDPOINT = "https://ideas-forum.herokuapp.com/mfa";
+    public static final String L_SERVER_ENDPOINT = "https://ideasforum-3e3f402d99b3.herokuapp.com/mfa";
 
     // Regulars
     public static final String REG_AT_LEAST_ONE_NUMBER = "((.+)?\\d+(.+)?)+";
@@ -24,4 +24,6 @@ public class GS {
     public static final String VIEW_CONNECTING_TO_SERVER_FAILURE = "server";
     public static final String VIEW_INTERNET_IS_UNAVAILABLE = "inet";
 
+    // Messages
+    public static final String MSG_CANNOT_READ_QRCODE = "Не удается прочитать QR-код";
 }

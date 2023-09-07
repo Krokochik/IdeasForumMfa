@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView0"
+        android:layout_width="298dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="180dp"
+        android:gravity="center"
+        android:text="Почти готово..."
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="298dp"
+        android:layout_height="127dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text='Следуйте инструкциям на сайте, затем нажмите "Подтвердить".\nВаш PIN: '
+        android:textAlignment="center"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView0" />
+
+    <com.krokochik.ideasforummfa.ui.TransitionButton
+        android:id="@+id/submit_button"
+        android:layout_width="305dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/primaryDark"
+        android:gravity="center"
+        android:text="Далее"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:defaultColor="@color/primaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0"
+        app:loaderColor="@android:color/white" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

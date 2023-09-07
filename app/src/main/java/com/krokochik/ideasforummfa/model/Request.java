@@ -7,15 +7,14 @@ import lombok.NonNull;
 
 @Data
 public class Request {
+
     public enum Method {
         GET,
         POST
     }
 
-    private HashMap<String, String> body;
-
-    @NonNull
-    Method method;
+    HashMap<String, String> body;
+    Method method = Method.GET;
     String endpoint = "";
 
     public Request(@NonNull Method method, String endpoint, @NonNull HashMap<String, String> body) {
@@ -24,7 +23,7 @@ public class Request {
         this.endpoint = endpoint;
     }
 
-    public Request( @NonNull Method method, @NonNull HashMap<String, String> body) {
+    public Request(@NonNull Method method, @NonNull HashMap<String, String> body) {
         this.body = body;
         this.method = method;
     }
@@ -38,7 +37,9 @@ public class Request {
         this.method = method;
     }
 
-    public Object get(String key) {
+    public Request() {}
+
+    public String get(String key) {
         return body.get(key);
     }
 
@@ -47,7 +48,7 @@ public class Request {
         return this;
     }
 
-    public Object remove(String key) {
+    public String remove(String key) {
         return body.remove(key);
     }
 }

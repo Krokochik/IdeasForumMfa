@@ -6,14 +6,14 @@ import lombok.Data;
 
 @Data
 public class Response {
-    int code;
-    private HashMap<String, String> body;
+    short code;
+    private HashMap<String, Object> body;
 
     public Object get(String key) {
         return body.get(key);
     }
 
-    public Response put(String key, String value) {
+    public Response put(String key, Object value) {
         body.put(key, value);
         return this;
     }

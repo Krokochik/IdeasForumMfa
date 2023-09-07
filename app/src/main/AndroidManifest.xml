@@ -16,6 +16,11 @@
         android:theme="@style/Theme.IdeasForumMfaLight">
         <activity
             android:name=".activities.MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.IdeasForumMfaLight.NoActionBar" />
+        <activity
+            android:name=".activities.PinActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LauncherActivity"
