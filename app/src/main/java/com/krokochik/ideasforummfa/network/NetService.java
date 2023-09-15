@@ -8,6 +8,12 @@ import android.telecom.Call;
 import com.krokochik.ideasforummfa.model.CallbackTask;
 import com.krokochik.ideasforummfa.model.Condition;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class NetService {
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
@@ -18,13 +24,12 @@ public class NetService {
 
 
     public static void setOnInternetStateChange(CallbackTask<Boolean> task, Context ctx) {
-        Thread thread = new Thread(() -> {
-            while (true) {
-                boolean currentState = isNetworkAvailable(ctx);
-                while (isNetworkAvailable(ctx) == currentState) {}
-                task.run(!currentState);
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        AtomicBoolean currentState = new AtomicBoolean(isNetworkAvailable(ctx));
+        executorService.scheduleAtFixedRate(() -> {
+            if (isNetworkAvailable(ctx) != currentState.get()) {
+                task.run(!currentState.get());
             }
-        });
-        thread.start();
+        }, 0, 5, TimeUnit.SECONDS);
     }
 }

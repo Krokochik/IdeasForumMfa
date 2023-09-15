@@ -18,18 +18,21 @@ import com.krokochik.ideasforummfa.model.Response;
 import com.krokochik.ideasforummfa.model.Token;
 import com.krokochik.ideasforummfa.network.HttpRequestsAddresser;
 import com.krokochik.ideasforummfa.qrcodescanner.QrCodeActivity;
-import com.krokochik.ideasforummfa.resources.GS;
+import com.krokochik.ideasforummfa.resources.GV;
+import com.krokochik.ideasforummfa.service.ActivityBroker;
 import com.krokochik.ideasforummfa.service.crypto.Cryptographer;
 import com.krokochik.ideasforummfa.ui.TransitionButton;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Optional;
 
 import javax.crypto.IllegalBlockSizeException;
 
+import lombok.SneakyThrows;
 import lombok.val;
 
-public class AuthorizationActivity extends Activity {
+public class AuthorizationActivity extends BaseActivity {
 
     int currentViewID;
     String codeInputText = "";
@@ -52,10 +55,11 @@ public class AuthorizationActivity extends Activity {
         }
     }
 
+    @SneakyThrows
     @Nullable
-    private String[] getMfaConnectPinAndSecret(String mfaToken, String username) throws IllegalBlockSizeException {
+    private String[] getMfaConnectPinAndSecret(String mfaToken, String username) {
         HttpRequestsAddresser requestsAddresser = new HttpRequestsAddresser();
-        Request request = new Request(Request.Method.POST, "/confirm");
+        Request request = new Request(Request.Method.POST, new URL(GV.L_SERVER_ENDPOINT + "/confirm"));
         System.out.println(mfaToken);
         request.setBody(new HashMap<String, String>() {{
             put("mfaStatus", Cryptographer.encrypt("connected", mfaToken, ""));
@@ -79,7 +83,7 @@ public class AuthorizationActivity extends Activity {
         try {
             HttpRequestsAddresser requestsAddresser = new HttpRequestsAddresser();
             Response response = requestsAddresser.sendRequest(new Request(Request.Method.GET,
-                    connectingToken.getPublicPart()));
+                    new URL(GV.L_SERVER_ENDPOINT + "/" + connectingToken.getPublicPart())));
 
             if (response.getCode() != 200)
                 return Optional.empty();
@@ -107,7 +111,7 @@ public class AuthorizationActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast errorToast = Toast.makeText(this, GS.MSG_CANNOT_READ_QRCODE, Toast.LENGTH_LONG);
+        Toast errorToast = Toast.makeText(this, GV.MSG_CANNOT_READ_QRCODE, Toast.LENGTH_LONG);
 
         if (resultCode != Activity.RESULT_OK) {
             Log.d("QR", "COULD NOT GET A GOOD RESULT.");
@@ -137,8 +141,10 @@ public class AuthorizationActivity extends Activity {
                 String secret = null;
                 try {
                     String[] pinAndSecret = connectMfa(connectingToken);
-                    pin = pinAndSecret[0];
-                    secret = pinAndSecret[1];
+                    if (pinAndSecret != null) {
+                        pin = pinAndSecret[0];
+                        secret = pinAndSecret[1];
+                    }
                 } catch (IllegalBlockSizeException e) {
                     e.printStackTrace();
                 }
@@ -197,8 +203,10 @@ public class AuthorizationActivity extends Activity {
                     try {
                         String[] pinAndSecret = connectMfa(
                                 new Token(code.substring(0, 9), code.substring(9)));
-                        pin = pinAndSecret[0];
-                        secret = pinAndSecret[1];
+                        if (pinAndSecret != null) {
+                            pin = pinAndSecret[0];
+                            secret = pinAndSecret[1];
+                        }
                     } catch (IllegalBlockSizeException e) {
                         e.printStackTrace();
                     }

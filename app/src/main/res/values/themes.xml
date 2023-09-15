@@ -8,11 +8,8 @@
         <item name="android:textColor">@color/primaryDark</item>
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:autofilledHighlight">@color/transparent</item>
-
-        <!-- Secondary brand color. -->
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:statusBarColor">@color/primaryDark</item>
     </style>
 
     <style name="Theme.IdeasForumMfaLight.NoActionBar">

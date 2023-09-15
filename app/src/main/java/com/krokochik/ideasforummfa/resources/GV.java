@@ -1,11 +1,16 @@
 package com.krokochik.ideasforummfa.resources;
 
-// Global Strings
-public class GS {
+// Global values
+public class GV {
+    // Properties
+    public static final Short VAL_SECRET_LENGTH = 512;
+    public static final Byte VAL_CODE_LENGTH = 9;
+    public static final Byte VAL_GENERATING_PERIOD_SECONDS = 30;
+
     // Storage
-    public static final String ST_USERNAME_SET = "usernameSet";
-    public static final String ST_SESSION_KEY_SET = "sessionKeySet";
-    public static final String ST_AUTH_DATA_NAME = "SecretStorage";
+    public static final String ST_PREF_NAME = "SecureStorage";
+    public static final String ST_SECRET = "secret";
+    public static final String ST_USERNAME = "username";
 
     // Extras
     public static final String EXTRA_SESSION_KEY = "sessionKey";
@@ -14,6 +19,7 @@ public class GS {
 
     // Links
     public static final String L_SERVER_ENDPOINT = "https://ideasforum-3e3f402d99b3.herokuapp.com/mfa";
+    public static final String L_SERVER = "https://ideasforum-3e3f402d99b3.herokuapp.com";
 
     // Regulars
     public static final String REG_AT_LEAST_ONE_NUMBER = "((.+)?\\d+(.+)?)+";

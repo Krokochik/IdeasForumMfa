@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/loadMessage"
         android:layout_width="359dp"
         android:layout_height="46dp"
         android:fontFamily="sans-serif-medium"
